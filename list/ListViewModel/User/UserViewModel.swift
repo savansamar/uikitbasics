@@ -183,7 +183,7 @@ class UserViewModel {
 
     // ✅ MARK: - Public Methods
     func loadGalleryItems() {
-        userGalleryArray = [UserGallery(url: "", showAdd: true)]
+        userGalleryArray = [UserGallery(url: "", showAdd: true,fileName: "")]
     }
 
     func formattedDate(_ date: Date) -> String {

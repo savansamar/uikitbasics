@@ -12,7 +12,6 @@ protocol GalleryCollectionViewCellDelegate: AnyObject {
 }
 
 
-
 class GalleryCollectionViewCell: UICollectionViewCell {
     
     
@@ -55,14 +54,30 @@ class GalleryCollectionViewCell: UICollectionViewCell {
            } else {
                closeButtonView.isHidden = false
                addImageView.isHidden = true
-               if let url = URL(string: data.url),
-                  let data = try? Data(contentsOf: url) {
-                   image.image = UIImage(data: data)
-                   image.contentMode = .scaleAspectFill
-               } else {
-                   image.image = UIImage(systemName: "photo")
-                   image.contentMode = .scaleAspectFit
-               }
+              
+               ///
+               // Prefer fileName path
+                       let pathURL: URL
+                       if !data.fileName.isEmpty {
+                           pathURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
+                               .appendingPathComponent(data.fileName)
+                       } else if let fallbackURL = URL(string: data.url) {
+                           pathURL = fallbackURL
+                       } else {
+                           image.image = UIImage(systemName: "photo")
+                           image.contentMode = .scaleAspectFit
+                           return
+                       }
+
+                       if let imageData = try? Data(contentsOf: pathURL) {
+                           image.image = UIImage(data: imageData)
+                           image.contentMode = .scaleAspectFill
+                       } else {
+                           print("⚠️ Image not found at: \(pathURL)")
+                           image.image = UIImage(systemName: "photo")
+                           image.contentMode = .scaleAspectFit
+                       }
+               ///
            }
        }
 
