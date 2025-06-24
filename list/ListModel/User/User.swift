@@ -11,4 +11,10 @@ struct User:Codable {
     let dob: String
     let age: Int
     let department: String
+    var gallery: [UserGallery]? = nil
+}
+
+struct UserGallery:Codable {
+    var url: String
+    var showAdd: Bool
 }
