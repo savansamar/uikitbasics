@@ -1,6 +1,11 @@
 import Foundation
 
-struct User {
+//Codable : it allows your object to be encoded into Data and later decoded back,
+//typealias Codable = Encodable & Decodable
+//•    Encodable – lets you convert your object into JSON or Data
+//•    Decodable – lets you convert JSON or Data into your object
+
+struct User:Codable {
     let name: String
     let email: String
     let dob: String

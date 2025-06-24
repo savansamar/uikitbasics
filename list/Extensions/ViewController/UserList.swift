@@ -2,18 +2,7 @@ import UIKit
 
 
 extension ViewController: UITableViewDelegate {
-    
-//    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-//        tableView.deselectRow(at: indexPath, animated: true)
-//        
-//        let user = viewModel.getAllUsers()[indexPath.row]  // or get grouped version
-//        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-//
-//        if let userVC = storyboard.instantiateViewController(withIdentifier: "userview") as? UserViewController {
-//            userVC.existingUser = user  // ← Pass selected user
-//            navigationController?.pushViewController(userVC, animated: true)
-//        }
-//    }
+
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
@@ -33,6 +22,7 @@ extension ViewController: UITableViewDelegate {
             navigationController?.pushViewController(userVC, animated: true)
         }
     }
+    
 }
 
 
@@ -71,5 +61,33 @@ extension ViewController: UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         return viewModel.sortedDepartments[section]
+    }
+    
+    
+    
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle,forRowAt indexPath: IndexPath) {
+            if editingStyle == .delete {
+                let department = viewModel.sortedDepartments[indexPath.section]
+                let usersInSection = viewModel.isSearching
+                    ? viewModel.filteredUsersByDepartment[department]
+                    : viewModel.usersByDepartment[department]
+                
+                guard let user = usersInSection?[indexPath.row],
+                      let index = viewModel.indexOfUser(matching: user.email) else {
+                    return
+                }
+
+                // Delete from view model
+                viewModel.deleteUser(at: index)
+
+                // Refresh table
+                tableView.reloadData()
+            }
+        }
+    
+    
+    func tableView(_ tableView: UITableView,
+                   titleForDeleteConfirmationButtonForRowAt indexPath: IndexPath) -> String? {
+        return "Remove"
     }
 }
