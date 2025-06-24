@@ -15,6 +15,7 @@ class ViewController: UIViewController {
     @IBOutlet weak var addButtonView: UIButton!
     let viewModel = UserViewModel.shared
     
+    @IBOutlet weak var search: UISearchBar!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -37,6 +38,27 @@ class ViewController: UIViewController {
         let hasUsers = !viewModel.users.isEmpty
         view.backgroundColor = UIColor(red: 255/255, green: 140/255, blue: 0/255, alpha: 1.0)
         
+        search.searchBarStyle = .minimal
+        search.backgroundImage = UIImage()
+        search.backgroundColor = .clear
+        search.barTintColor = .clear
+        
+        // Customize the input field inside
+        if let textField = search.value(forKey: "searchField") as? UITextField {
+            textField.backgroundColor = .white  // white input box
+            textField.textColor = .black        // or .white if you want white text
+            textField.tintColor = .white        // cursor color
+            textField.attributedPlaceholder = NSAttributedString(
+                string: "Search...",
+                attributes: [NSAttributedString.Key.foregroundColor: UIColor.lightGray]
+            )
+            
+            // Corner radius
+              textField.layer.cornerRadius = 8
+              textField.clipsToBounds = true
+
+        }
+        
         header.labelTitle.text = "Users"
         header.showAddButton.backgroundColor = .red
         header.showBackButton.backgroundColor = .white
@@ -52,7 +74,7 @@ class ViewController: UIViewController {
            }
         
         viewModel.groupUsersByDepartment()
-          tableView.reloadData()
+        tableView.reloadData()
     }
     
     @IBAction func onAdd(_ sender: UIButton) {
@@ -68,3 +90,15 @@ class ViewController: UIViewController {
 
 }
 
+extension ViewController: UISearchBarDelegate {
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        viewModel.searchUsers(with: searchText)
+        tableView.reloadData()
+    }
+    
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        searchBar.text = ""
+        viewModel.searchUsers(with: "")
+        tableView.reloadData()
+    }
+}

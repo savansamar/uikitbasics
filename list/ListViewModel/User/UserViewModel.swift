@@ -7,6 +7,9 @@ class UserViewModel {
     static let shared = UserViewModel()
     var usersByDepartment: [String: [User]] = [:]
     var sortedDepartments: [String] = []
+    var filteredUsersByDepartment: [String: [User]] = [:]
+    var isSearching: Bool = false
+    
 
     private init() { }
 
@@ -74,5 +77,27 @@ class UserViewModel {
     
     func indexOfUser(matching email: String) -> Int? {
         return users.firstIndex { $0.email.lowercased() == email.lowercased() }
+    }
+    
+    func searchUsers(with keyword: String) {
+        let trimmedKeyword = keyword.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
+        
+        guard !trimmedKeyword.isEmpty else {
+            isSearching = false
+            groupUsersByDepartment()  // Reset to full list
+            return
+        }
+
+        isSearching = true
+
+        let filtered = users.filter {
+            $0.name.lowercased().contains(trimmedKeyword) ||
+            $0.email.lowercased().contains(trimmedKeyword)
+        }
+
+        filteredUsersByDepartment = Dictionary(grouping: filtered, by: { $0.department })
+        filteredUsersByDepartment = filteredUsersByDepartment.filter { !$0.value.isEmpty }
+
+        sortedDepartments = departments.filter { filteredUsersByDepartment.keys.contains($0) }
     }
 }

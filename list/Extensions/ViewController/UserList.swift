@@ -3,14 +3,33 @@ import UIKit
 
 extension ViewController: UITableViewDelegate {
     
+//    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+//        tableView.deselectRow(at: indexPath, animated: true)
+//        
+//        let user = viewModel.getAllUsers()[indexPath.row]  // or get grouped version
+//        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+//
+//        if let userVC = storyboard.instantiateViewController(withIdentifier: "userview") as? UserViewController {
+//            userVC.existingUser = user  // ← Pass selected user
+//            navigationController?.pushViewController(userVC, animated: true)
+//        }
+//    }
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        
-        let user = viewModel.getAllUsers()[indexPath.row]  // or get grouped version
+
+        let department = viewModel.sortedDepartments[indexPath.section]
+        let usersInSection = viewModel.isSearching
+            ? viewModel.filteredUsersByDepartment[department]
+            : viewModel.usersByDepartment[department]
+
+        guard let user = usersInSection?[indexPath.row] else { return }
+
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        print("user \(user)")
         if let userVC = storyboard.instantiateViewController(withIdentifier: "userview") as? UserViewController {
-            userVC.existingUser = user  // ← Pass selected user
+            userVC.existingUser = user
+            viewModel.groupUsersByDepartment()
+            tableView.reloadData()
             navigationController?.pushViewController(userVC, animated: true)
         }
     }
@@ -26,13 +45,24 @@ extension ViewController: UITableViewDataSource {
 
     //Tells how many rows (users) should be displayed in a particular section (department).
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+//        let department = viewModel.sortedDepartments[section]
+//        return viewModel.usersByDepartment[department]?.count ?? 0
+        
         let department = viewModel.sortedDepartments[section]
-        return viewModel.usersByDepartment[department]?.count ?? 0
+            let usersInSection = viewModel.isSearching
+                ? viewModel.filteredUsersByDepartment[department]
+                : viewModel.usersByDepartment[department]
+            
+            return usersInSection?.count ?? 0
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let department = viewModel.sortedDepartments[indexPath.section]
-        let user = viewModel.usersByDepartment[department]?[indexPath.row]
+        let usersInSection = viewModel.isSearching
+              ? viewModel.filteredUsersByDepartment[department]
+              : viewModel.usersByDepartment[department]
+          
+        let user = usersInSection?[indexPath.row]
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
         cell.textLabel?.text = user?.name

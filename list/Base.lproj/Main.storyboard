@@ -23,11 +23,19 @@
                                     <constraint firstAttribute="height" constant="120" id="s5S-N3-l8o"/>
                                 </constraints>
                             </view>
+                            <searchBar contentMode="redraw" translatesAutoresizingMaskIntoConstraints="NO" id="bIH-09-h7f">
+                                <rect key="frame" x="0.0" y="140" width="393" height="56"/>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <textInputTraits key="textInputTraits"/>
+                                <connections>
+                                    <outlet property="delegate" destination="BYZ-38-t0r" id="MF7-EP-YkZ"/>
+                                </connections>
+                            </searchBar>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Nu1-XZ-LzP">
-                                <rect key="frame" x="20" y="140" width="353" height="678"/>
+                                <rect key="frame" x="20" y="220" width="353" height="598"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TE1-UQ-17l">
-                                        <rect key="frame" x="152" y="322" width="49" height="34.333333333333314"/>
+                                        <rect key="frame" x="152" y="282" width="49" height="34.333333333333314"/>
                                         <state key="normal" title="Button"/>
                                         <buttonConfiguration key="configuration" style="plain" image="plus.app.fill" catalog="system">
                                             <color key="baseForegroundColor" systemColor="viewFlipsideBackgroundColor"/>
@@ -37,7 +45,7 @@
                                         </connections>
                                     </button>
                                     <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="qrp-Aa-Ner">
-                                        <rect key="frame" x="0.0" y="0.0" width="353" height="678"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="353" height="598"/>
                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                         <prototypes>
                                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="cell" id="usG-ER-5Q3">
@@ -66,10 +74,13 @@
                         <color key="backgroundColor" red="0.17254901959999999" green="0.17254901959999999" blue="0.17254901959999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="G2H-zR-fDH" secondAttribute="trailing" id="0yh-Lf-xpj"/>
+                            <constraint firstItem="bIH-09-h7f" firstAttribute="top" secondItem="G2H-zR-fDH" secondAttribute="bottom" constant="20" id="GDt-WN-Xpe"/>
+                            <constraint firstItem="bIH-09-h7f" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="HOJ-4Y-Yie"/>
+                            <constraint firstItem="Nu1-XZ-LzP" firstAttribute="top" secondItem="G2H-zR-fDH" secondAttribute="bottom" constant="100" id="KPT-iQ-QRl"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="Nu1-XZ-LzP" secondAttribute="trailing" constant="20" id="Lpy-mB-yko"/>
                             <constraint firstItem="G2H-zR-fDH" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="OiP-eT-bzx"/>
-                            <constraint firstItem="Nu1-XZ-LzP" firstAttribute="top" secondItem="G2H-zR-fDH" secondAttribute="bottom" constant="20" id="XDq-pp-yoz"/>
                             <constraint firstItem="Nu1-XZ-LzP" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="oVs-bv-6pY"/>
+                            <constraint firstItem="bIH-09-h7f" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="pUP-Zs-qFr"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="Nu1-XZ-LzP" secondAttribute="bottom" id="sDG-G6-02T"/>
                             <constraint firstItem="G2H-zR-fDH" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="vM9-sB-q1D"/>
                         </constraints>
@@ -78,6 +89,7 @@
                     <connections>
                         <outlet property="addButtonView" destination="TE1-UQ-17l" id="VH8-wI-W2o"/>
                         <outlet property="header" destination="G2H-zR-fDH" id="Pct-bN-J47"/>
+                        <outlet property="search" destination="bIH-09-h7f" id="okG-8r-itw"/>
                         <outlet property="tableView" destination="qrp-Aa-Ner" id="mGS-b9-KV6"/>
                     </connections>
                 </viewController>
